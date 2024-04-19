@@ -1,0 +1,28 @@
+﻿@inherits LayoutComponentBase
+
+<MudThemeProvider  Theme="MyCustomTheme"/>
+<MudSnackbarProvider />
+<MudLayout>
+    <MudMainContent Class="pt-0">
+        @Body
+    </MudMainContent>
+    <MudAppBar Bottom="true" Fixed="true" Color="Color.Primary" Elevation="1">
+        <MudSpacer />
+        <MudIconButton Icon="@Icons.Material.Outlined.Dashboard" Color="Color.Inherit" Edge="Edge.Start" Class="mx-2" />
+        <MudIconButton Icon="@Icons.Material.Filled.Calculate" Color="Color.Inherit" Edge="Edge.Start" Class="mx-2" Variant="Variant.Outlined" />
+        <MudSpacer />
+    </MudAppBar>
+</MudLayout>
+
+@code {
+    MudTheme MyCustomTheme = new MudTheme()
+        {
+            Typography = new Typography()
+            {
+                Default = new Default()
+                {
+                    FontFamily = new[] { "fontfile", "Helvetica", "Arial", "sans-serif" }
+                }
+            }
+        };
+}

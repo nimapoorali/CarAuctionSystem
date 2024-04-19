@@ -1,0 +1,213 @@
+﻿@page "/"
+@inject ISnackbar Snackbar;
+@inject ICarAuctionService CarAuctionService
+@using System.Globalization;
+
+<MudContainer Class="mt-12" Style="margin-bottom:100px;" MaxWidth="MaxWidth.Medium">
+    <MudItem Class="mb-14">
+        <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true" Class="d-flex align-center justify-center">
+            <MudImage Src="https://progi.com/wp-content/uploads/2018/02/Progi_forme_99x45.png" Alt="Progi" Class="mx-4" />
+            Bid Calculator
+        </MudText>
+    </MudItem>
+    <MudPaper Class="px-4" Square="true" Elevation="25" Style="background-color:white">
+        <MudGrid Spacing="6">
+            <MudItem xs="12" md="6">
+                <MudItem xs="12" Class=""><MudText Typo="Typo.h6">Car Information</MudText></MudItem>
+                <MudItem xs="12" Class="py-0 mb-4"><MudText Typo="Typo.body2">Please enter car information to calculate the bid amount.</MudText></MudItem>
+                @*<MudText Typo="Typo.h5" GutterBottom="true">Information</MudText>*@
+                <MudGrid>
+                    <MudItem xs="12">
+                        <MudRadioGroup T="int" Value="@CarType" ValueChanged="OnValueChanged">
+                            <MudRadio Value="1" Color="Color.Default" Size="Size.Large">Common Car</MudRadio>
+                            <MudRadio Value="2" Color="Color.Warning" Size="Size.Large">Luxury Car</MudRadio>
+                        </MudRadioGroup>
+                        <MudTextField Label="Car Price" Variant="Variant.Outlined" Required="true" Mask="@(new PatternMask("0000000"))" T="double"
+                                      HelperText="Required and maximum 7 digits" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.AttachMoney" DebounceInterval="650" OnDebounceIntervalElapsed="OnTextChanged" />
+                    </MudItem>
+                </MudGrid>
+            </MudItem>
+            <MudItem xs="12" md="6">
+                @*<MudText Typo="Typo.h6" GutterBottom="true">Calculation Results</MudText>*@
+                <MudPaper Class="d-flex flex-column" Outlined="true">
+                    <MudList>
+                        <MudListItem IconColor="CarTypeColor" Icon="@CarTypeIcon" Class="my-0 py-1">
+                            <div class="d-flex">
+                                <MudText>Car Type</MudText>
+                                <MudText Inline="true" Class="ml-auto">@CarTypeName</MudText>
+                            </div>
+                        </MudListItem>
+                        <MudListItem IconColor="Color.Tertiary" Icon="@Icons.Material.Filled.Money" Class="my-0 py-1">
+                            <div class="d-flex">
+                                <MudText>Car Price</MudText>
+                                <MudText Class="ml-auto">$ @CarPrice.ToString("0,0.00")</MudText>
+                            </div>
+                        </MudListItem>
+                        <MudDivider Class="my-2" DividerType="DividerType.Middle"></MudDivider>
+                        <MudListItem Icon="@Icons.Material.Filled.LocalAtm" IconColor="Color.Info" Class="my-0 py-1">
+                            <div class="d-flex">
+                                <MudText>Basic Fee</MudText>
+                                <MudText Inline="true" Class="ml-auto">$ @BasicFee.ToString("0,0.00") +</MudText>
+                            </div>
+                        </MudListItem>
+                        <MudListItem Icon="@Icons.Material.Filled.LocalAtm" IconColor="Color.Info" Class="my-0 py-1">
+                            <div class="d-flex">
+                                <MudText>Special Fee</MudText>
+                                <MudText Class="ml-auto">$ @SpecialFee.ToString("0,0.00") +</MudText>
+                            </div>
+                        </MudListItem>
+                        <MudListItem Icon="@Icons.Material.Filled.LocalAtm" IconColor="Color.Info" Class="my-0 py-1">
+                            <div class="d-flex">
+                                <MudText>Association Fee</MudText>
+                                <MudText Class="ml-auto">$ @AssociationFee.ToString("0,0.00") +</MudText>
+                            </div>
+                        </MudListItem>
+                        <MudListItem Icon="@Icons.Material.Filled.LocalAtm" IconColor="Color.Info" Class="my-0 py-1">
+                            <div class="d-flex">
+                                <MudText>Storage Fee</MudText>
+                                <MudText Class="ml-auto">$ @StorageFee.ToString("0,0.00") +</MudText>
+                            </div>
+                        </MudListItem>
+                    </MudList>
+                    <div class="mt-auto">
+                        <MudDivider />
+                        <div class="d-flex pa-4 back" style="background-color:aliceblue;">
+                            <MudText><b>Total:</b></MudText>
+                            <MudText Class="ml-auto"><b>$ @Total.ToString("0,0.00")</b></MudText>
+                        </div>
+                    </div>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+
+</MudContainer>
+@code {
+    public CultureInfo _en = CultureInfo.GetCultureInfo("en-US");
+    public double CarPrice { get; set; } = 0;
+    public int CarType { get; set; } = 1;
+    public string CarTypeName => CarType == 1 ? "Common" : CarType == 2 ? "Luxury" : "";
+    public Color CarTypeColor => CarType == 1 ? Color.Default : CarType == 2 ? Color.Warning : Color.Dark;
+    public string CarTypeIcon => CarType == 1 ? Icons.Material.Filled.DirectionsCar : CarType == 2 ? Icons.Material.Filled.ElectricCar : @Icons.Material.Filled.DirectionsCar;
+
+    public decimal BasicFee { get; set; } = 0;
+    public decimal SpecialFee { get; set; } = 0;
+    public decimal AssociationFee { get; set; } = 0;
+    public decimal StorageFee { get; set; } = 0;
+    public decimal Total { get; set; } = 0;
+
+    public BidViewModel? model = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
+        Snackbar.Configuration.PreventDuplicates = false;
+        //Snackbar.Configuration.NewestOnTop = false;//default
+        Snackbar.Configuration.VisibleStateDuration = 4000;
+        Snackbar.Configuration.ShowTransitionDuration = 100;
+        Snackbar.Configuration.SnackbarVariant = Variant.Filled;
+    }
+
+    async void OnValueChanged(int newCarType)
+    {
+        try
+        {
+            CarType = newCarType;
+
+            await RequestBidCalculate();
+
+        }
+        catch (ApiCallException ex)
+        {
+            foreach (var item in ex.ErrorMessages)
+            {
+                Snackbar.Add("Operation failed: " + item, MudBlazor.Severity.Warning);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add("Unexpected error occured.", MudBlazor.Severity.Error);
+        }
+    }
+
+    async void OnTextChanged(string newCarPrice)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(newCarPrice))
+            {
+                Snackbar.Add("Please enter the car price.", MudBlazor.Severity.Warning);
+                CarPrice = 0;
+                ResetFees();
+                return;
+            }
+
+            CarPrice = double.Parse(newCarPrice);
+
+            await RequestBidCalculate();
+
+        }
+        catch (ApiCallException ex)
+        {
+            foreach (var item in ex.ErrorMessages)
+            {
+                Snackbar.Add("Operation failed: " + item, MudBlazor.Severity.Warning);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add("Unexpected error occured.", MudBlazor.Severity.Error);
+        }
+    }
+
+    private void ResetFees()
+    {
+        BasicFee = 0.00M;
+        SpecialFee = 0.00M;
+        AssociationFee = 0.00M;
+        StorageFee = 0.00M;
+        Total = 0.00M;
+
+    }
+
+    async Task RequestBidCalculate()
+    {
+        ResetFees();
+
+        model = await CarAuctionService.GetBidAsync(CarTypeName, CarPrice);
+
+        if (model is not null)
+        {
+            if (model.Fees is not null)
+            {
+                if (model.Fees.Any(f => f.Title == "Basic"))
+                {
+                    BasicFee = model.Fees.First(f => f.Title == "Basic").Amount!.Value;
+                }
+                if (model.Fees.Any(f => f.Title == "Special"))
+                {
+                    SpecialFee = model.Fees.First(f => f.Title == "Special").Amount!.Value;
+
+                }
+                if (model.Fees.Any(f => f.Title == "Association"))
+                {
+                    AssociationFee = model.Fees.First(f => f.Title == "Association").Amount!.Value;
+
+                }
+                if (model.Fees.Any(f => f.Title == "Storage"))
+                {
+                    StorageFee = model.Fees.First(f => f.Title == "Storage").Amount!.Value;
+                }
+            }
+
+            if (model.Total is not null)
+            {
+                Total = model.Total.Value;
+            }
+        }
+
+        StateHasChanged();
+
+        Snackbar.Add("The calculated bid successfully read from the server.", MudBlazor.Severity.Success);
+    }
+}
