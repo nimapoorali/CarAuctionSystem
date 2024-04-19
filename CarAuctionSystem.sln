@@ -15,7 +15,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarAuction.Api", "CarAuctio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarAuction.WebApp", "CarAuction.WebApp\CarAuction.WebApp.csproj", "{6DBFD1DB-C626-4ED8-8938-6D24A875FD36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarAuction.Infrastructure.Test", "CarAuction.Infrastructure.Test\CarAuction.Infrastructure.Test.csproj", "{AEBF7403-FEB3-4EA5-9BA4-C5BE1C910E0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarAuction.Infrastructure.Test", "CarAuction.Infrastructure.Test\CarAuction.Infrastructure.Test.csproj", "{AEBF7403-FEB3-4EA5-9BA4-C5BE1C910E0D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{6F65AC67-FCE1-49DE-9FFE-9813CD6A8F5A}"
+	ProjectSection(SolutionItems) = preProject
+		C:\Users\Nima\Documents\FlashBack Movies\progi-bidcalculator-desktop.jpg = C:\Users\Nima\Documents\FlashBack Movies\progi-bidcalculator-desktop.jpg
+		C:\Users\Nima\Documents\FlashBack Movies\progi-bidcalculator-mobile.jpg = C:\Users\Nima\Documents\FlashBack Movies\progi-bidcalculator-mobile.jpg
+		C:\Users\Nima\Documents\FlashBack Movies\progi-bidcalculator-readme.txt = C:\Users\Nima\Documents\FlashBack Movies\progi-bidcalculator-readme.txt
+		C:\Users\Nima\Documents\FlashBack Movies\progi-bidcalculator.mp4 = C:\Users\Nima\Documents\FlashBack Movies\progi-bidcalculator.mp4
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
