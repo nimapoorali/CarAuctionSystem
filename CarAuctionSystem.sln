@@ -19,10 +19,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarAuction.Infrastructure.T
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{6F65AC67-FCE1-49DE-9FFE-9813CD6A8F5A}"
 	ProjectSection(SolutionItems) = preProject
-		C:\Users\Nima\Documents\FlashBack Movies\progi-bidcalculator-desktop.jpg = C:\Users\Nima\Documents\FlashBack Movies\progi-bidcalculator-desktop.jpg
-		C:\Users\Nima\Documents\FlashBack Movies\progi-bidcalculator-mobile.jpg = C:\Users\Nima\Documents\FlashBack Movies\progi-bidcalculator-mobile.jpg
-		C:\Users\Nima\Documents\FlashBack Movies\progi-bidcalculator-readme.txt = C:\Users\Nima\Documents\FlashBack Movies\progi-bidcalculator-readme.txt
-		C:\Users\Nima\Documents\FlashBack Movies\progi-bidcalculator.mp4 = C:\Users\Nima\Documents\FlashBack Movies\progi-bidcalculator.mp4
+		docs\progi-bidcalculator-desktop.jpg = docs\progi-bidcalculator-desktop.jpg
+		docs\progi-bidcalculator-mobile.jpg = docs\progi-bidcalculator-mobile.jpg
+		docs\progi-bidcalculator-readme.txt = docs\progi-bidcalculator-readme.txt
+		docs\progi-bidcalculator.mp4 = docs\progi-bidcalculator.mp4
 	EndProjectSection
 EndProject
 Global
