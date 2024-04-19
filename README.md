@@ -1,4 +1,4 @@
-* The "CarAuctionSystem" application has been implemented in order to participate in practical test of a private company. See the Wiki Home page to find the corrresponding documents.
+* The "CarAuctionSystem" application has been implemented in order to participate in practical test of a private company. See the Wiki Home page to find the corresponding documents.
 
 
 * The Technologies have been used in the application are as follows:
